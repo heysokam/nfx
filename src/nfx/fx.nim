@@ -86,6 +86,16 @@ proc binarySearch    *(f1 :Fx) :Fx=  (f1.FxBase * FxResolution).binarySearch.Fx
 proc binaryTwo       *(f1 :Fx) :Fx=  (f1.FxBase * FxResolution).binaryTwo.Fx
 proc sqrt            *(f1 :Fx) :Fx=  f1.binaryTwo
 
+# Powers
+proc pow*(f1 :Fx; n :Natural) :Fx=
+  ## Calculates f1 raised to the power of n.
+  if n == 0: return 1.fx
+  result = f1
+  for it in 1..<n:
+    result *= f1
+template sqr  *(f1 :Fx) :Fx=  f1*f1  ## Calculates f1 squared
+template pow2 *(f1 :Fx) :Fx=  f1*f1  ## Calculates f1 squared
+template `^`  *(f1 :Fx; n :Natural) :Fx=  f1.pow(n)  ## Alias for f1.pow(n)
 
 
 #_________________________
