@@ -13,7 +13,7 @@ license       = "GPL-3.0-or-later"
 #___________________
 # Build requirements
 requires     "nim >= 1.6.10"    ## Current stable
-taskRequires "test", "print"
+# taskRequires "test", "print"
 
 #___________________
 # Folders
