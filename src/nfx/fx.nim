@@ -54,16 +54,21 @@ func `<=`  *(f1,f2 :Fx) :bool {.borrow.}
 func `==`  *(f1,f2 :Fx) :bool {.borrow.}
 func min   *(f1,f2 :Fx) :Fx {.borrow.}
 func max   *(f1,f2 :Fx) :Fx {.borrow.}
+
 # Specific. Cannot borrow
-func `*`  *(f1,f2 :Fx) :Fx=  ((f1.FxBase*f2.FxBase) div FxResolution).Fx
-func `*=` *(f1 :var Fx; f2 :Fx) :void=  f1 = f1*f2
+func `*`   *(f1,f2 :Fx) :Fx=  ((f1.FxBase*f2.FxBase) div FxResolution).Fx
   ## Fixed point multiplication. Cast down to base, multiply, div by resolution so decimals are readjusted, and cast to Fx
+func `*=`  *(f1 :var Fx; f2 :Fx) :void=  f1 = f1*f2
+  ## Multiply f1 by f2 and apply to f1 in-place. Uses Fx*Fx operator
 func `div` *(f1,f2 :Fx) :Fx= ((f1.FxBase div f2.FxBase) * FxResolution).Fx
   ## Fixed point division. Cast down to base, divide, multiply by resolution so decimals are readjusted, and cast to Fx
+func `==`  *(f1 :Fx; n :SomeNumber) :bool=  f1 == n.fx
+  ## Numbers are equal when n converted to Fx is eq to f1
 
 # Aliases
 template `/`  *(f1,f2 :Fx) :Fx=    f1 div f2     ## Alias to div for ergonomics. Division will always use div
 template `!=` *(f1,f2 :Fx) :bool=  not f1 == f2  ## Alias to `not a == b`
+template `==` *(n :SomeNumber; f1 :Fx) :bool=  n == f1  ## Alias for f1 == n. Numbers are equal when n converted to Fx is eq to f1
 # Extra Arithmetic
 template `/` *(f1 :Fx; n :SomeNumber) :Fx=  f1 div n.fx  ## Division of an Fx type with SomeNumber, which converts SomeNumber to fx when necessary
 template `/` *(n :SomeNumber; f1 :Fx) :Fx=  n.fx div f1  ## Division of SomeNumber with an Fx type, which converts SomeNumber to fx when necessary
