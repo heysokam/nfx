@@ -55,7 +55,8 @@ func `==`  *(f1,f2 :Fx) :bool {.borrow.}
 func min   *(f1,f2 :Fx) :Fx {.borrow.}
 func max   *(f1,f2 :Fx) :Fx {.borrow.}
 # Specific. Cannot borrow
-func `*` *(f1,f2 :Fx) :Fx=  ((f1.FxBase*f2.FxBase) div FxResolution).Fx
+func `*`  *(f1,f2 :Fx) :Fx=  ((f1.FxBase*f2.FxBase) div FxResolution).Fx
+func `*=` *(f1 :var Fx; f2 :Fx) :void=  f1 = f1*f2
   ## Fixed point multiplication. Cast down to base, multiply, div by resolution so decimals are readjusted, and cast to Fx
 func `div` *(f1,f2 :Fx) :Fx= ((f1.FxBase div f2.FxBase) * FxResolution).Fx
   ## Fixed point division. Cast down to base, divide, multiply by resolution so decimals are readjusted, and cast to Fx
