@@ -37,6 +37,8 @@ func fracFl *(f1 :Fx)    :SomeFloat= (f1.FxBase mod FxResolution)/FxResolution
 #___________________
 const Zero *:Fx= 0.fx
 const One  *:Fx= 1.fx
+const Two  *:Fx= 2.fx
+const Half *:Fx= 0.5.fx
 
 #_____________________________
 # Basic Arithmetic

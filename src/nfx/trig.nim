@@ -31,20 +31,20 @@ func sin *(f1 :Fx) :Fx=
   var x :Fx= f1 mod Tau
   x = x / PiHalf
   # Take x modulo one rotation, so [-4..+4].
-  if x < 0.fx:
+  if x < Zero:
     x += 4.fx
   # Init the sign as positive
-  var sign :Fx= +1.fx
+  var sign :Fx= One
   # Restrict domain to [0..2].
-  if x > 2.fx:
-    sign = -1.fx
-    x -= 2.fx
+  if x > Two:
+    sign = -One
+    x -= Two
   # Restrict domain to [0..1].
-  if x > 1.fx:
-    x = 2.fx - x
+  if x > One:
+    x = Two - x
   # Calculate the polynomial
   let x2 :Fx= x*x  # Compute x squared only once
-  result = sign * x * (Pi - x2 * (Tau - 5.fx - x2 * (Pi - 3.fx)) )/2.fx
+  result = sign * x * (Pi - x2 * (Tau - 5.fx - x2 * (Pi - 3.fx)) )/Two
 
 #___________________
 func cos *(f1 :Fx) :Fx=  sin(PiHalf + f1)
@@ -57,7 +57,7 @@ func tan *(f1 :Fx) :Fx=
   let cx :Fx= cos(f1)
   # Tangent goes to infinity at 90 and -90 degrees.
   # Fx type cannot represent infinity, so check that the cos result is within range.
-  if cx > 1.fx: raise newException(FxError, "Can't compute tangent of the number. Its cos goes to infinity.")
+  if cx > One: raise newException(FxError, "Can't compute tangent of the number. Its cos goes to infinity.")
   result = sin(f1) / cx
 
 #___________________
@@ -120,5 +120,5 @@ func acos *(x :Fx) :Fx=
   assert x >= -One and x <= One
   if x == -One: return Pi
   let yy :Fx= One - x*x
-  result = 2.fx * atanDiv(sqrt(yy), One + x)
+  result = Two * atanDiv(sqrt(yy), One + x)
 
