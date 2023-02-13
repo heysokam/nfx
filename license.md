@@ -3,6 +3,7 @@ _.              : GNU General Public License, Version 3 or higher_
 
 _This software contains modified code from:_  
 _lbartoletti/fpn  : Copyright (C) Loïc Bartoletti_  
+_MikeLankamp/fpm  : Copyright (C) Mike Lankamp_  
 _See the doc/licenses folder for more information about their copyright._  
 
 _For library dependencies:_  
