@@ -1,6 +1,6 @@
-#:_______________________________________________________________
-#  nfx : Copyright (C) Ivan Mar (sOkam!) : GNU GPLv3 or higher   :
-#:________________________________________________________________
+#:______________________________________________
+#  nfx : Copyright (C) Ivan Mar (sOkam!) : MIT  :
+#:______________________________________________
 
 # Integer based operations and safety checks
 import ./op/divd as divide     ; export divide

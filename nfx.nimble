@@ -1,6 +1,6 @@
-#:_______________________________________________________________
-#  nfx : Copyright (C) Ivan Mar (sOkam!) : GNU GPLv3 or higher   :
-#:________________________________________________________________
+#:______________________________________________
+#  nfx : Copyright (C) Ivan Mar (sOkam!) : MIT  :
+#:______________________________________________
 
 #___________________
 # Package
@@ -8,7 +8,7 @@ packageName   = "nfx"
 version       = "0.0.0"
 author        = "sOkam"
 description   = "Deterministic fixed point math for Nim"
-license       = "GPL-3.0-or-later"
+license       = "MIT"
 
 #___________________
 # Build requirements

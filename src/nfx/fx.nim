@@ -1,6 +1,6 @@
-#:_____________________________________________________________
-#  nfx : Copyright (C) Ivan Mar (sOkam!) : GNU GPLv3 or higher :
-#:_____________________________________________________________
+#:______________________________________________
+#  nfx : Copyright (C) Ivan Mar (sOkam!) : MIT  :
+#:______________________________________________
 # std dependencies
 import std/math
 import std/strutils

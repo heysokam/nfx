@@ -1,5 +1,5 @@
 #:_______________________________________________________________
-#  nfx : Copyright (C) Ivan Mar (sOkam!) : GNU GPLv3 or higher   :
+#  nfx : Copyright (C) Ivan Mar (sOkam!) : MIT                   :
 #  This file contains modified code from MikeLankamp/fpm (MIT)   :
 #  Check the doc/licenses folder for more info about its license :
 #:_______________________________________________________________
@@ -27,6 +27,7 @@ func sin *(f1 :Fx) :Fx=
   ## Explanations of Taylor theorem:
   ## - Simple    by Khan Academy:  https://www.youtube.com/watch?v=8SsC5st4LnI
   ## - Advanced  by  3Blue1Brown:  https://www.youtube.com/watch?v=3d6DsjIBzJ4
+  ## - Math of Taylor polynomial for sin(x):  https://www.youtube.com/watch?v=bxi1xMBhCM0
   # Turn x from [0..2*PI] domain into [0..4] domain
   var x :Fx= f1 mod Tau
   x = x / PiHalf
