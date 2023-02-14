@@ -78,8 +78,8 @@ func `==`  *(f1 :Fx; n :SomeNumber) :bool=  f1 == n.fx
 
 #___________________
 # Aliases
-template `/`  *(f1,f2 :Fx) :Fx=    f1 div f2     ## Alias to div for ergonomics. Division will always use div
-template `!=` *(f1,f2 :Fx) :bool=  not f1 == f2  ## Alias to `not f1 == f2`
+template `/`  *(f1,f2 :Fx) :Fx=    f1 div f2       ## Alias to div for ergonomics. Division will always use div
+template `!=` *(f1,f2 :Fx) :bool=  not (f1 == f2)  ## Alias to `not f1 == f2`
 template `==` *(n :SomeNumber; f1 :Fx) :bool=  n == f1  ## Alias for f1 == n. Numbers are equal when n converted to Fx is eq to f1
 #___________________
 # Extra Arithmetic
@@ -130,5 +130,5 @@ proc toFloat *(fx :Fx) :SomeFloat=  FxBase(fx) / FxResolution  ## Converts the f
 #_________________________
 # String conversion
 #___________________
-proc `$` *(fx :Fx) :string=  fx.toFloat.formatFloat(ffDecimal, 4)
+proc `$` *(fx :Fx) :string=  fx.toFloat.formatFloat(ffDecimal, FxPrecision)
 

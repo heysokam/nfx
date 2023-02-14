@@ -98,16 +98,12 @@ func atan2 *(y, x :Fx) :Fx=
   if x < Zero:
     if y >= Zero: result += Pi
     else:         result -= Pi
-#___________________
-const arctan2 * = atan2
 
 #___________________
 func atan *(x :Fx) :Fx=
   if x < Zero: return -atan(-x)
   if x > One:  return PiHalf - atanNorm(One/x)
   result = atanNorm(x)
-#___________________
-const arctan * = atan
 
 #___________________
 func asin *(x :Fx) :Fx=
@@ -122,4 +118,11 @@ func acos *(x :Fx) :Fx=
   if x == -One: return Pi
   let yy :Fx= One - x*x
   result = Two * atanDiv(sqrt(yy), One + x)
+
+#___________________
+# Aliases for std name compatibility
+template arcsin  *(x :Fx) :Fx=  asin(x)
+template arccos  *(x :Fx) :Fx=  acos(x)
+template arctan  *(y, x :Fx) :Fx=   atan(y,x)
+template arctan2 *(y, x :Fx) :Fx=  atan2(y,x)
 
