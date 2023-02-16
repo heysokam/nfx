@@ -67,7 +67,7 @@ func `abs` *(f1 :Fx) :Fx {.borrow.}
 
 #___________________
 # Specific. Cannot borrow
-func `*`   *(f1,f2 :Fx) :Fx=  ((f1.FxBase*f2.FxBase) div FxResolution).Fx
+func `*`   *(f1,f2 :Fx) :Fx=  (karatsuba(f1.FxBase, f2.FxBase) div FxResolution).Fx
   ## Fixed point multiplication. Cast down to base, multiply, div by resolution so decimals are readjusted, and cast back to Fx
 func `*=`  *(f1 :var Fx; f2 :Fx) :void=  f1 = f1*f2
   ## Multiply f1 by f2 and apply to f1 in-place. Uses Fx*Fx operator
