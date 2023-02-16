@@ -74,26 +74,30 @@ func atanNorm *(x :Fx) :Fx=
 #___________________
 func atanDiv *(y,x :Fx) :Fx=
   ## Calculates atan(y / x), assuming x != 0.
-  # If x is very, very small, y/x can easily overflow the fixed-point range.
+  ## If x is very, very small, y/x can easily overflow the fixed-point range.
   # If q = y/x and q > 1, atan(q) would calculate atan(1/q) as an intermediate step anyway.
   # We can shortcut that and avoid the loss of information, thus improving the accuracy of atan(y/x) for very small x.
-  assert x != Zero
+  if   y == Zero and x == Zero: return Zero  # 0/0 == undefined. Return an unititialized value.
+  elif x == Zero: return High                # y/0 == infinity.  Return a saturated value.
   # Make sure y and x are positive.
   # If y / x is negative (when y or x, but not both, are negative), negate the result to keep the correct outcome.
   if y < Zero:
     if x < Zero: return  atanDiv(-y, -x)
     else:        return -atanDiv(-y,  x)
   if x < Zero:   return -atanDiv( y, -x)
-  assert y >= Zero and x > Zero
   if y > x: result = PiHalf - atanNorm(x/y)
   else:     result = atanNorm(y/x)
 
 #___________________
 func atan2 *(y, x :Fx) :Fx=
+  ## Arc tangent of two numbers x and y, or four-quadrant inverse tangent. 
+  ## Similar to calculating the arc tangent of y / x,
+  ## except that the signs of both arguments are used to determine the quadrant of the result.
+  ## Result is an angle in radians.
   if x == Zero:
-    assert y != Zero
-    if y > Zero: return  PiHalf
-    else:        return -PiHalf
+    if   y == Zero: return  Zero    # 0/0 == undefined. Return an unititialized value.
+    elif y >  Zero: return  PiHalf
+    else:           return -PiHalf
   result = atanDiv(y, x)
   if x < Zero:
     if y >= Zero: result += Pi

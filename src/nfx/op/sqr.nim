@@ -50,7 +50,7 @@ proc binarySearch *(n :SomeInteger) :SomeInteger=
 proc binaryTwo *(n :SomeInteger) :SomeInteger=
   ## Integer square root, using the digit-by-digit base2 method.
   ## https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Example_3
-  assert n > 0, "sqrt input should be non-negative"
+  assert n >= 0, "sqrt input should be non-negative"
   # result = 0           #  cₙ
   var num :typeof(n)= n  #  Xₙ₊₁
   #  bitₙ which starts at the highest power of four <= n
