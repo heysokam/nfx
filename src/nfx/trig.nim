@@ -22,18 +22,24 @@ const PiHalf *:Fx= Pi / 2
 #___________________
 func sin *(f1 :Fx) :Fx=
   ## Fifth-order Taylor polynomial.
-  ## Curve-fitting approximation algorithm originally described by Jasper Vijn on coranac.com
+  ## Curve-fitting approximation algorithm described by Jasper Vijn.
   ## It has a worst-case relative error of 0.07% (over [-pi:pi]).
+  ##
+  ## Simplified formula: 5th order Taylor polynomial sine approximation:
+  ##   S5(z) = 1/2 z(π−z^2 [(2π−5)−z^2 (π−3)])
+  ##
   ## Explanations of Taylor theorem:
   ## - Simple    by Khan Academy:  https://www.youtube.com/watch?v=8SsC5st4LnI
   ## - Advanced  by  3Blue1Brown:  https://www.youtube.com/watch?v=3d6DsjIBzJ4
   ## - Math of Taylor polynomial for sin(x):  https://www.youtube.com/watch?v=bxi1xMBhCM0
+  ## Full explanation of the algorithm:
+  ## - Online:   https://www.coranac.com/2009/07/sines/
+  ## - Archive:  doc/SineApproximation-Coranac.pdf
   # Turn x from [0..2*PI] domain into [0..4] domain
   var x :Fx= f1 mod Tau
   x = x / PiHalf
   # Take x modulo one rotation, so [-4..+4].
-  if x < Zero:
-    x += 4.fx
+  if x < Zero:  x += 4.fx
   # Init the sign as positive
   var sign :Fx= One
   # Restrict domain to [0..2].
@@ -41,10 +47,10 @@ func sin *(f1 :Fx) :Fx=
     sign = -One
     x -= Two
   # Restrict domain to [0..1].
-  if x > One:
-    x = Two - x
+  if x > One:  x = Two - x
   # Calculate the polynomial
   let x2 :Fx= x*x  # Compute x squared only once
+  # S5(z)=        z   (π  − z^2  [(2π − 5)   − z^2  (π  − 3)])   * 1/2
   result = sign * x * (Pi - x2 * (Tau - 5.fx - x2 * (Pi - 3.fx)) )/Two
 
 #___________________
