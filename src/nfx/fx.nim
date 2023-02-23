@@ -117,11 +117,11 @@ template `*` *(n :SomeNumber; f1 :Fx) :Fx=  n.fx * f1    ## Multiplication of So
 
 #___________________
 # Square roots
-proc linearAscend    *(f1 :Fx) :Fx=  (f1.FxBase * FxResolution).linearAscend.Fx
-proc linearAscendAdd *(f1 :Fx) :Fx=  (f1.FxBase * FxResolution).linearAscendAdd.Fx
-proc linearDescend   *(f1 :Fx) :Fx=  (f1.FxBase * FxResolution).linearDescend.Fx
-proc binarySearch    *(f1 :Fx) :Fx=  (f1.FxBase * FxResolution).binarySearch.Fx
-proc binaryTwo       *(f1 :Fx) :Fx=  (f1.FxBase * FxResolution).binaryTwo.Fx
+proc linearAscend    *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).linearAscend.Fx
+proc linearAscendAdd *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).linearAscendAdd.Fx
+proc linearDescend   *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).linearDescend.Fx
+proc binarySearch    *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).binarySearch.Fx
+proc binaryTwo       *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).binaryTwo.Fx
 proc sqrt            *(f1 :Fx) :Fx=  f1.binaryTwo
 
 #___________________
