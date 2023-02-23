@@ -4,7 +4,8 @@
 # std dependencies
 import std/math
 import std/strutils
-import ./op
+# ndk dependencies
+import nmath/ints
 
 #_____________________________
 # Type Definitions

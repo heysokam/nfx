@@ -12,7 +12,8 @@ license       = "MIT"
 
 #___________________
 # Build requirements
-requires     "nim >= 1.6.10"    ## Current stable
+requires "nim >= 1.6.10"
+requires "https://github.com/heysokam/nmath"  ## Math tools and extensions
 # taskRequires "test", "print"
 
 #___________________
