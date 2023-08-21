@@ -10,6 +10,7 @@ version       = "0.0.0"
 author        = "sOkam"
 description   = "n*fx | Deterministic fixed point math for Nim"
 license       = "MIT"
+let gitURL    = &"https://github.com/heysokam/{packageName}"
 
 #___________________
 # Build requirements
