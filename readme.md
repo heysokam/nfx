@@ -1,4 +1,4 @@
-# Nim Fx: Deterministic Fixed Point math
+# n*fx | Deterministic fixed point math for Nim
 
 ## Disclaimer
 Determinism is top priority.

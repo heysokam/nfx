@@ -1,44 +1,73 @@
 #:______________________________________________
 #  nfx : Copyright (C) Ivan Mar (sOkam!) : MIT  :
 #:______________________________________________
+import std/[ os,strformat ]
 
 #___________________
 # Package
 packageName   = "nfx"
 version       = "0.0.0"
 author        = "sOkam"
-description   = "Deterministic fixed point math for Nim"
+description   = "n*fx | Deterministic fixed point math for Nim"
 license       = "MIT"
 
 #___________________
 # Build requirements
-requires "nim >= 1.6.10"
+requires "nim >= 2.0.0"
 requires "https://github.com/heysokam/nmath"  ## Math tools and extensions
-# taskRequires "test", "print"
 
 #___________________
 # Folders
-srcDir           = "src"
-binDir           = "bin"
-let testsDir     = "tests"
-let examplesDir  = "examples"
-let docDir       = "doc"
-skipdirs         = @[binDir, examplesDir, testsDir, docDir]
+srcDir          = "src"
+binDir          = "bin"
+let docDir      = "doc"
+let testsDir    = "tests"
+let examplesDir = "examples"
+
 
 #________________________________________
 # Helpers
 #___________________
-import std/strformat
-import std/os
-#___________________
-let nimcr = &"nim c -r --outdir:{binDir}"
+const vlevel = when defined(debug): 2 else: 1
+let nimcr  = &"nim c -r --verbosity:{vlevel} --outdir:{binDir}"
   ## Compile and run, outputting to binDir
-proc runFile (file, dir :string) :void=  exec &"{nimcr} {dir/file}"
-  ## Runs file from the given dir, using the nimcr command
-proc runTest (file :string) :void=  file.runFile(testsDir)
+proc runFile (file, dir, args :string) :void=  exec &"{nimcr} {dir/file} {args}"
+  ## Runs file from the given dir, using the nimcr command, and passing it the given args
+proc runFile (file :string) :void=  file.runFile( "", "" )
+  ## Runs file using the nimcr command
+proc runTest (file :string) :void=  file.runFile(testsDir, "")
   ## Runs the given test file. Assumes the file is stored in the default testsDir folder
-proc runExample (file :string) :void=  file.runFile(examplesDir)
+proc runExample (file :string) :void=  file.runFile(examplesDir, "")
   ## Runs the given test file. Assumes the file is stored in the default testsDir folder
+template example (name :untyped; descr,file :static string)=
+  ## Generates a task to build+run the given example
+  let sname = astToStr(name)  # string name
+  taskRequires sname, "SomePackage__123"  ## Doc
+  task name, descr:
+    runExample file
+
+
+#_________________________________________________
+# Tasks: Internal
+#___________________
+task push, "Internal:  Pushes the git repository, and orders to create a new git tag for the package, using the latest version.":
+  ## Does nothing when local and remote versions are the same.
+  requires "https://github.com/beef331/graffiti.git"
+  exec "git push"  # Requires local auth
+  exec "graffiti ./{packageName}.nimble"
+#___________________
+task tests, "Internal:  Builds and runs all tests in the testsDir folder.":
+  requires "pretty"
+  for file in testsDir.listFiles():
+    if file.lastPathPart.startsWith('t'):
+      try: runFile file
+      except: echo &" └─ Failed to run one of the tests from  {file}"
+#___________________
+task docgen, "Internal:  Generates documentation using Nim's docgen tools.":
+  echo &"{packageName}: Starting docgen..."
+  exec &"nim doc --project --index:on --git.url:{gitURL} --outdir:{docDir}/gen src/{packageName}.nim"
+  echo &"{packageName}: Done with docgen."
+
 
 
 #________________________________________
