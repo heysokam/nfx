@@ -7,12 +7,11 @@ Usually, in general fixed point math, the `fixed` part means specifically `decim
 That means that the decimal point is fixed to a specific **bit** of the underlying integer.  
 Something like `0b_0011_0101.0000`  
 
-This library uses a fixed point in its **base10** (aka decimal) representation, no matter what the underlying bits are doing.  
-Such that `42_000'int` == `42.000'f`. The underlying number would be storing a value of `42000`, which is 42 thousands.
+This library uses a fixed point in its **base10** (aka decimal) representation, no matter what the underlying bits are doing. Such that `42_000'int` == `42.000'f`. The underlying number would be storing a value of `42000`, which is 42 thousands.
 
 In bit-usage-optimization terms, this is very inefficient.
 We could be representing bigger numbers with the full 32bit range of an int32.  
-But the `Fx` number type is created specifically for **determinism** in the context of a videogame engine,
+But the `Fx` number type is created specifically for **determinism** in the context of a videogame engine.  
 A use-case in which such gigantic sizes are not required at all.  
 
 And if they were, they could use a `BigNumbers` type representation for overflow control of its underlying multiplications.
