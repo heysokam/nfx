@@ -1,11 +1,11 @@
-#:_______________________________________________________________
-#  nfx : Copyright (C) Ivan Mar (sOkam!) : MIT                   :
+#:________________________________________________________________
+#  nfx  |  Copyright (C) Ivan Mar (sOkam!)  |  MIT               :
 #  This file contains modified code from MikeLankamp/fpm (MIT)   :
 #  Check the doc/licenses folder for more info about its license :
-#:_______________________________________________________________
+#:________________________________________________________________
 # std dependencies
 from std/math as sm import nil
-# Module dependencies
+# n*fx dependencies
 import ./fx
 
 

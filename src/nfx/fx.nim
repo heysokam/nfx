@@ -1,32 +1,66 @@
-#:______________________________________________
-#  nfx : Copyright (C) Ivan Mar (sOkam!) : MIT  :
-#:______________________________________________
+#:___________________________________________________
+#  nfx  |  Copyright (C) Ivan Mar (sOkam!)  |  MIT  :
+#:___________________________________________________
 # std dependencies
 import std/math
 import std/strutils
-# ndk dependencies
+# n*dk dependencies
 import nmath/ints
+# n*fx dependencies
+import ./cfg
 
 #_____________________________
 # Type Definitions
 #___________________
-type FxBase  * = int32            ## Type used to store fixed point numbers
-type Fx      * = distinct FxBase  ## FxBase fixed point number
-type FxError * = object of ValueError
+## FxBase type list for the -d:nfxBaseType:N switch
+type BaseType *{.pure.}= enum
+  i32 = 0
+  i8  = 1, i16 = 2, i64 = 3
+  u8  = 5, u16 = 6, u32 = 7, u64 = 8
+converter toInt (t:BaseType) :int= t.ord # Automatically converts to ord internally without calling it
+#___________________
+## Underlying Type used to hold fixed point numbers
+when cfg.nfxBaseType == BaseType.i32:
+  type FxBase * = int32
+elif cfg.nfxBaseType == BaseType.i8:
+  type FxBase * = int8
+elif cfg.nfxBaseType == BaseType.i16:
+  type FxBase * = int16
+elif cfg.nfxBaseType == BaseType.i64:
+  type FxBase * = int64
+elif cfg.nfxBaseType == BaseType.i8:
+  type FxBase * = uint8
+elif cfg.nfxBaseType == BaseType.i16:
+  type FxBase * = uint16
+elif cfg.nfxBaseType == BaseType.i32:
+  type FxBase * = uint32
+elif cfg.nfxBaseType == BaseType.i64:
+  type FxBase * = uint64
+else:
+  import std/strformat
+  {.error: &"-d:nfxBaseType:N is defined with a value of {nfxBaseType} but the id is not part of the known list of types".}
+type Fx      * = distinct FxBase       ## Fixed point number, as a distinct of FxBase
+type FxError * = object of ValueError  ## Exception type raised on errors when operating on the value of the type.
 
 #_____________________________
-# Configuration
+# Internal Configuration
 #___________________
-const FxPrecision  *:FxBase= 4                      ## Decimal places of precision
-const FxResolution *:FxBase= FxBase(10^FxPrecision) ## Amount of steps represented per 1u
+const FxPrecision  *:FxBase=  FxBase(nfxPrecision)   ## Decimal places of precision  (converted from -d:nfxPrecision:N when defined)
+const FxResolution *:FxBase=  FxBase(10^FxPrecision) ## Integer amount/count of increments/steps represented per 1u
 
 #_____________________________
 # Constructors
 #___________________
-proc fx *(n :SomeInteger) :Fx=  Fx(n*FxResolution)
-proc fx *(n :SomeFloat)   :Fx=  Fx(n*FxResolution.float)
-template `'fx` *[T](n :T) :Fx=  fx(n)
-# Getters
+proc fx *(n :SomeInteger) :Fx=  Fx(n*FxResolution)        ## Create a correct Fx value, by multipliying by the resolution
+proc fx *(n :SomeFloat)   :Fx=  Fx(n*float(FxResolution)) ## Convert resolution to float, multiply by the number, and truncate the result into an FxBase repr
+
+
+
+
+
+
+
+# Getters  :  Returns a specific section of the number. Useful for helping with other tasks
 func whole  *(n :FxBase) :FxBase=    FxBase(n / FxResolution)
 func whole  *(f1 :Fx)    :FxBase=    FxBase(f1.FxBase / FxResolution)
 func frac   *(n :FxBase) :FxBase=    FxBase(n mod FxResolution)
@@ -147,5 +181,6 @@ proc toFloat *(fx :Fx) :SomeFloat=  FxBase(fx) / FxResolution  ## Converts the f
 #_________________________
 # String conversion
 #___________________
-proc `$` *(fx :Fx) :string=  fx.toFloat.formatFloat(ffDecimal, FxPrecision)
+when not defined(gcnone):  # Custom override for --mm:none, which cannot use strings
+  proc `$` *(fx :Fx) :string=  fx.toFloat.formatFloat(ffDecimal, FxPrecision)
 

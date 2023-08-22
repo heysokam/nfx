@@ -30,7 +30,8 @@ let examplesDir = "examples"
 # Helpers
 #___________________
 const vlevel = when defined(debug): 2 else: 1
-let nimcr  = &"nim c -r --verbosity:{vlevel} --outdir:{binDir}"
+const mode   = when defined(debug): "-d:debug" elif defined(release): "-d:release" elif defined(danger): "-d:danger" else: ""
+let nimcr = &"nim c -r --verbosity:{vlevel} {mode} --hint:Conf:off --hint:Link:off --hint:Exec:off --outdir:{binDir}"
   ## Compile and run, outputting to binDir
 proc runFile (file, dir, args :string) :void=  exec &"{nimcr} {dir/file} {args}"
   ## Runs file from the given dir, using the nimcr command, and passing it the given args
