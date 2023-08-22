@@ -113,9 +113,9 @@ func copySign *(x,y :Fx) :Fx=
 # Arithmetic
 func `*` *(f1,f2 :Fx) :Fx=
   ## Fixed point multiplication.
+  ## Convert down to base, multiply, div by resolution so decimals are readjusted, and convert back to Fx
   ## Doesn't have [over,under]flow checks, but converts to BiggestInt on karatsuba mult.
   ## This will will increase the range covered by the number, unless Fx is set to use int64 specifically.
-  ## Convert down to base, multiply, div by resolution so decimals are readjusted, and convert back to Fx
   (karatsuba(f1.FxBase, f2.FxBase) div FxResolution).Fx
 
 func `*=`  *(f1 :var Fx; f2 :Fx) :void=  f1 = f1*f2
@@ -128,12 +128,12 @@ func `div` *(f1,f2 :Fx) :Fx=
   ## Dividing 0/0 is undefined behavior in mathematics, because both 0/0 == 1 and 0/0 == 0 are valid.
   ## Since dividing two 0s would mean dividing two unititialized values,
   ## it only makes sense (out of the two options) to return another unititialized value back to its caller.
-  ## So, to avoid unnecesary crashes: 
+  ## So, to avoid unnecesary crashes:
   ## - Returns    0 when 0/0  (float would be nan)
   ## - Returns High when n/0  (float would be inf)
   if   f1 == Zero and f2 == Zero: return Zero  #     0/0 = undefined. Return unititialized value.
   elif f2 == Zero: return High.copySign(f1)    # (+-)n/0 = (+-)infinity. Saturate, instead of crash.
-  ((f1.FxBase div f2.FxBase) * FxResolution).Fx
+  ((f1.FxBase * FxResolution) div f2.FxBase).Fx  # TODO: Change to fx mult, for overflow checks
 
 func `==`  *(f1 :Fx; n :SomeNumber) :bool=  f1 == n.fx
   ## Numbers are equal when n converted to Fx is eq to f1
@@ -152,12 +152,12 @@ template `*` *(n :SomeNumber; f1 :Fx) :Fx=  n.fx * f1    ## Multiplication of So
 
 #___________________
 # Square roots
-proc linearAscend    *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).linearAscend.Fx
-proc linearAscendAdd *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).linearAscendAdd.Fx
-proc linearDescend   *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).linearDescend.Fx
-proc binarySearch    *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).binarySearch.Fx
-proc binaryTwo       *(f1 :Fx) :Fx=  karatsuba(f1.FxBase, FxResolution).binaryTwo.Fx
-proc sqrt            *(f1 :Fx) :Fx=  f1.binaryTwo
+proc linearAscend    *(f1 :Fx) :Fx {.inline.}=  karatsuba(f1.FxBase, FxResolution).linearAscend.Fx
+proc linearAscendAdd *(f1 :Fx) :Fx {.inline.}=  karatsuba(f1.FxBase, FxResolution).linearAscendAdd.Fx
+proc linearDescend   *(f1 :Fx) :Fx {.inline.}=  karatsuba(f1.FxBase, FxResolution).linearDescend.Fx
+proc binarySearch    *(f1 :Fx) :Fx {.inline.}=  karatsuba(f1.FxBase, FxResolution).binarySearch.Fx
+proc binaryTwo       *(f1 :Fx) :Fx {.inline.}=  karatsuba(f1.FxBase, FxResolution).binaryTwo.Fx
+proc sqrt            *(f1 :Fx) :Fx {.inline.}=  f1.binaryTwo
 
 #___________________
 # Powers

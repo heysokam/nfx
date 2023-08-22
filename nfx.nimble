@@ -6,7 +6,7 @@ import std/[ os,strformat ]
 #___________________
 # Package
 packageName   = "nfx"
-version       = "0.0.1"
+version       = "0.0.2"
 author        = "sOkam"
 description   = "n*fx | Deterministic fixed point math for Nim"
 license       = "MIT"
