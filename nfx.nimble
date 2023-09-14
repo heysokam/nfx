@@ -24,6 +24,7 @@ binDir          = "bin"
 let docDir      = "doc"
 let testsDir    = "tests"
 let examplesDir = "examples"
+skipFiles       = @["nim.cfg"]
 
 
 #________________________________________
