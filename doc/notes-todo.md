@@ -1,3 +1,6 @@
+ TRIG.TODO: https://www.youtube.com/watch?v=kkMt4lrJzs8
+OPTIM.TODO: https://www.youtube.com/watch?v=gCzOhZ_LUps
+
 ## nfx notes
 Check [std/bigints](https://nimdocs.com/nim-lang/bigints/bigints.html) compatibility with borrow and distinct
 [Other functions](https://github.com/MikeLankamp/fpm/blob/master/include/fpm/math.hpp) not covered by fpn:
