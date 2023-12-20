@@ -1,5 +1,16 @@
+> **WARNING**: This repository has been archived as of _Dec.2023_  
+> Feel free to fork it and update whatever you need.  
+> See the [Reason for archival of this repository](#why-i-changed-pure-nim-to-be-my-auxiliary-programming-language-instead-of-being-my-primary-focus) section for an explanation of why this was decided.
+
+> _Note: It **might** eventually be unarchived,_  
+> _and become a Nim wrapper for the [MinC](https://github.com/heysokam/minc) library that will contain this exact same functionality._
+
 # n*fx | Deterministic fixed point math for Nim
 
+> **Bugs warning**:  
+> There is a bug somewhere in the sine function that I never found the time to search for and fix.  
+> The rest of the library works fine.  
+> If you want fixed point numbers, but don't need the determinism specifically, I recommend using @[lbartoletti/fpn](https://gitlab.com/lbartoletti/fpn) instead.
 
 ## Notes
 Usually, in general fixed point math, the `fixed` part means specifically `decimal point fixed-to-a-bit math`.  
@@ -44,3 +55,33 @@ By default, if final output value [over/under]flows, it will be saturated (aka c
 This is wildly imprecise under such cases, but result will be the same everytime.  
 
 If you require avoiding [over/under]flow checks, there are some alternative operators for them.  
+
+
+---
+
+### Why I changed Pure Nim to be my auxiliary programming language, instead of being my primary focus
+> _Important:_  
+> _This reason is very personal, and it is exclusively about using Nim in a manual-memory-management context._  
+> _Nim is great as it is, and the GC performance is so optimized that it's barely noticeable that it is there._  
+> _That's why I still think Nim is the best language for projects where a GC'ed workflow makes more sense._  
+
+Nim with `--mm:none` was always my ideal language.  
+But its clear that the GC:none feature (albeit niche) is only provided as a sidekick, and not really maintained as a core feature.  
+
+I tried to get Nim to behave correctly with `--mm:none` for months and months.  
+It takes an absurd amount of unnecessary effort to get it to a basic default state.  
+
+And I'm not talking about the lack of GC removing half of the nim/std library because of nim's extensive use of seq/string in its stdlib.  
+I'm talking about features that shouldn't even be allowed to exist at all in a gc:none context, because they leak memory and create untrackable bugs.  
+_(eg: exceptions, object variants, dynamically allocated types, etc etc)_  
+
+After all of that effort, and seeing how futile it was, I gave up on `--mm:none` completely.  
+It would take a big amount of effort patching nim itself so that these issues are no longer there.  
+And, sadly, based on experience, I'm not confident in my ability to communicate with Nim's leadership to do such work myself.  
+
+This setback led me to consider other alternatives, including Zig or Pure C.  
+But, in the end, I decided that from now on I will be programming with my [MinC](https://github.com/heysokam/minc) source-to-source language/compiler instead.  
+
+As such, I will be deprecating most of my `n*dk` libraries.  
+And I will be creating my engine's devkit with MinC instead.  
+
